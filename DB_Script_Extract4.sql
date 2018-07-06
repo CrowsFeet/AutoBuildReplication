@@ -1,16 +1,16 @@
 -- Enabling the replication database
 USE master;
-EXEC sp_replicationdboption @dbname = N'HZN_QUALITY', @optname = N'publish',
+EXEC sp_replicationdboption @dbname = N'<Add_DB_Name_Here>', @optname = N'publish',
     @value = N'true';
 GO
 
-EXEC [HZN_QUALITY].sys.sp_addlogreader_agent @job_login = NULL,
+EXEC [<Add_DB_Name_Here>].sys.sp_addlogreader_agent @job_login = NULL,
     @job_password = NULL, @publisher_security_mode = 1;
 GO
 -- Adding the transactional publication
-USE [HZN_QUALITY];
-EXEC sp_addpublication @publication = N'QUALITY_Repl',
-    @description = N'Transactional publication of database ''HZN_QUALITY'' from Publisher ''ECIC-SQL07''.',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addpublication @publication = N'<Add_DB_Name_Here>_Repl',
+    @description = N'Transactional publication of database ''<Add_DB_Name_Here>'' from Publisher ''<Add_Server_Name_Here>''.',
     @sync_method = N'concurrent', @retention = 0, @allow_push = N'true',
     @allow_pull = N'true', @allow_anonymous = N'true',
     @enabled_for_internet = N'false', @snapshot_in_defaultfolder = N'true',
@@ -25,65 +25,38 @@ EXEC sp_addpublication @publication = N'QUALITY_Repl',
 GO
 
 
-EXEC sp_addpublication_snapshot @publication = N'QUALITY_Repl',
+EXEC sp_addpublication_snapshot @publication = N'<Add_DB_Name_Here>_Repl',
     @frequency_type = 1, @frequency_interval = 0,
     @frequency_relative_interval = 0, @frequency_recurrence_factor = 0,
     @frequency_subday = 0, @frequency_subday_interval = 0,
     @active_start_time_of_day = 0, @active_end_time_of_day = 235959,
     @active_start_date = 0, @active_end_date = 0, @job_login = NULL,
     @job_password = NULL, @publisher_security_mode = 1;
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'sa';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\Domain Admins';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\Mark.Barnes';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\mike.rawson';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\andrew.gazdowicz';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\tony.adams';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\oliver.garside';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\andrew.dams';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\Steve.Kidd';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
-    @login = N'ECICLOUD\ECi SQL Admin Users';
-GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'NT SERVICE\Winmgmt';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'NT SERVICE\SQLWriter';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'NT SERVICE\SQLSERVERAGENT';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'NT Service\MSSQLSERVER';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'distributor_admin';
 GO
-EXEC sp_grant_publication_access @publication = N'QUALITY_Repl',
+EXEC sp_grant_publication_access @publication = N'<Add_DB_Name_Here>_Repl',
     @login = N'AGTest';
 GO
 
 -- Adding the transactional articles
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'ACTION_OUTCOME', @source_owner = N'dbo',
     @source_object = N'ACTION_OUTCOME', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -95,8 +68,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboACTION_OUTCOME]',
     @upd_cmd = N'SCALL [sp_MSupd_dboACTION_OUTCOME]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ACTION_STAGE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ACTION_STAGE',
     @source_owner = N'dbo', @source_object = N'ACTION_STAGE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -107,8 +80,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ACTION_STAGE',
     @del_cmd = N'CALL [sp_MSdel_dboACTION_STAGE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboACTION_STAGE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ADDRESS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ADDRESS',
     @source_owner = N'dbo', @source_object = N'ADDRESS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -118,8 +91,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ADDRESS',
     @del_cmd = N'CALL [sp_MSdel_dboADDRESS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboADDRESS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALERT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ALERT',
     @source_owner = N'dbo', @source_object = N'ALERT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -129,8 +102,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALERT',
     @del_cmd = N'CALL [sp_MSdel_dboALERT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboALERT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALLOCATION',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ALLOCATION',
     @source_owner = N'dbo', @source_object = N'ALLOCATION',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -141,8 +114,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALLOCATION',
     @del_cmd = N'CALL [sp_MSdel_dboALLOCATION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboALLOCATION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALLOCATIONS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ALLOCATIONS',
     @source_owner = N'dbo', @source_object = N'ALLOCATIONS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -153,8 +126,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ALLOCATIONS',
     @del_cmd = N'CALL [sp_MSdel_dboALLOCATIONS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboALLOCATIONS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ANALYSIS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ANALYSIS',
     @source_owner = N'dbo', @source_object = N'ANALYSIS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -165,8 +138,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ANALYSIS',
     @del_cmd = N'CALL [sp_MSdel_dboANALYSIS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboANALYSIS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ANALYSIS_DEF',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ANALYSIS_DEF',
     @source_owner = N'dbo', @source_object = N'ANALYSIS_DEF',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -177,8 +150,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ANALYSIS_DEF',
     @del_cmd = N'CALL [sp_MSdel_dboANALYSIS_DEF]',
     @upd_cmd = N'SCALL [sp_MSupd_dboANALYSIS_DEF]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AREA',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'AREA',
     @source_owner = N'dbo', @source_object = N'AREA', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -188,8 +161,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AREA',
     @del_cmd = N'CALL [sp_MSdel_dboAREA]',
     @upd_cmd = N'SCALL [sp_MSupd_dboAREA]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ATTRIBUTE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ATTRIBUTE',
     @source_owner = N'dbo', @source_object = N'ATTRIBUTE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -200,8 +173,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ATTRIBUTE',
     @del_cmd = N'CALL [sp_MSdel_dboATTRIBUTE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboATTRIBUTE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'ATTRIBUTE_LIST', @source_owner = N'dbo',
     @source_object = N'ATTRIBUTE_LIST', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -213,8 +186,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboATTRIBUTE_LIST]',
     @upd_cmd = N'SCALL [sp_MSupd_dboATTRIBUTE_LIST]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'ATTRIBUTE_VALUE', @source_owner = N'dbo',
     @source_object = N'ATTRIBUTE_VALUE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -226,8 +199,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboATTRIBUTE_VALUE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboATTRIBUTE_VALUE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AUDIT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'AUDIT',
     @source_owner = N'dbo', @source_object = N'AUDIT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -237,8 +210,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AUDIT',
     @del_cmd = N'CALL [sp_MSdel_dboAUDIT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboAUDIT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AUTO_DETAIL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'AUTO_DETAIL',
     @source_owner = N'dbo', @source_object = N'AUTO_DETAIL',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -249,8 +222,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'AUTO_DETAIL',
     @del_cmd = N'CALL [sp_MSdel_dboAUTO_DETAIL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboAUTO_DETAIL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BANK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BANK',
     @source_owner = N'dbo', @source_object = N'BANK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -260,8 +233,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BANK',
     @del_cmd = N'CALL [sp_MSdel_dboBANK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBANK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BANK_METHOD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BANK_METHOD',
     @source_owner = N'dbo', @source_object = N'BANK_METHOD',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -272,8 +245,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BANK_METHOD',
     @del_cmd = N'CALL [sp_MSdel_dboBANK_METHOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBANK_METHOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'BANK_STATEMENT', @source_owner = N'dbo',
     @source_object = N'BANK_STATEMENT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -285,8 +258,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboBANK_STATEMENT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBANK_STATEMENT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BATCH',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BATCH',
     @source_owner = N'dbo', @source_object = N'BATCH', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -296,8 +269,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BATCH',
     @del_cmd = N'CALL [sp_MSdel_dboBATCH]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBATCH]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BIN',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BIN',
     @source_owner = N'dbo', @source_object = N'BIN', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -306,8 +279,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BIN',
     @ins_cmd = N'CALL [sp_MSins_dboBIN]', @del_cmd = N'CALL [sp_MSdel_dboBIN]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBIN]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'Bookings',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'Bookings',
     @source_owner = N'dbo', @source_object = N'Bookings', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -318,8 +291,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'Bookings',
     @del_cmd = N'CALL [sp_MSdel_dboBookings]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBookings]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BSINFO',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BSINFO',
     @source_owner = N'dbo', @source_object = N'BSINFO', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -329,8 +302,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BSINFO',
     @del_cmd = N'CALL [sp_MSdel_dboBSINFO]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBSINFO]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BUDGET',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BUDGET',
     @source_owner = N'dbo', @source_object = N'BUDGET', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -340,8 +313,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BUDGET',
     @del_cmd = N'CALL [sp_MSdel_dboBUDGET]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBUDGET]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'BUDGET_HISTORY', @source_owner = N'dbo',
     @source_object = N'BUDGET_HISTORY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -353,8 +326,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboBUDGET_HISTORY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBUDGET_HISTORY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'BUSINESS_SUBTYPE', @source_owner = N'dbo',
     @source_object = N'BUSINESS_SUBTYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -366,8 +339,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboBUSINESS_SUBTYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBUSINESS_SUBTYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BUSINESS_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'BUSINESS_TYPE',
     @source_owner = N'dbo', @source_object = N'BUSINESS_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -378,8 +351,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'BUSINESS_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboBUSINESS_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboBUSINESS_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CALL',
     @source_owner = N'dbo', @source_object = N'CALL', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -389,8 +362,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL',
     @del_cmd = N'CALL [sp_MSdel_dboCALL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCALL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_HISTORY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CALL_HISTORY',
     @source_owner = N'dbo', @source_object = N'CALL_HISTORY',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -401,8 +374,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_HISTORY',
     @del_cmd = N'CALL [sp_MSdel_dboCALL_HISTORY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCALL_HISTORY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_REASON',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CALL_REASON',
     @source_owner = N'dbo', @source_object = N'CALL_REASON',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -413,8 +386,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_REASON',
     @del_cmd = N'CALL [sp_MSdel_dboCALL_REASON]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCALL_REASON]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_SUBJECT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CALL_SUBJECT',
     @source_owner = N'dbo', @source_object = N'CALL_SUBJECT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -425,8 +398,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_SUBJECT',
     @del_cmd = N'CALL [sp_MSdel_dboCALL_SUBJECT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCALL_SUBJECT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CALL_TYPE',
     @source_owner = N'dbo', @source_object = N'CALL_TYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -437,8 +410,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CALL_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboCALL_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCALL_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CAMPAIGN',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CAMPAIGN',
     @source_owner = N'dbo', @source_object = N'CAMPAIGN', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -449,8 +422,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CAMPAIGN',
     @del_cmd = N'CALL [sp_MSdel_dboCAMPAIGN]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCAMPAIGN]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'CAMPAIGN_SELECTION', @source_owner = N'dbo',
     @source_object = N'CAMPAIGN_SELECTION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -462,8 +435,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCAMPAIGN_SELECTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCAMPAIGN_SELECTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'CAMPAIGN_TRADERS', @source_owner = N'dbo',
     @source_object = N'CAMPAIGN_TRADERS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -475,8 +448,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCAMPAIGN_TRADERS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCAMPAIGN_TRADERS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CATALOGUE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CATALOGUE',
     @source_owner = N'dbo', @source_object = N'CATALOGUE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -487,8 +460,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CATALOGUE',
     @del_cmd = N'CALL [sp_MSdel_dboCATALOGUE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCATALOGUE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'CATALOGUE_VISIBILITY', @source_owner = N'dbo',
     @source_object = N'CATALOGUE_VISIBILITY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -500,8 +473,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCATALOGUE_VISIBILITY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCATALOGUE_VISIBILITY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'COMMS_DOC_TYPE', @source_owner = N'dbo',
     @source_object = N'COMMS_DOC_TYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -513,8 +486,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCOMMS_DOC_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOMMS_DOC_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COMMS_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'COMMS_TYPE',
     @source_owner = N'dbo', @source_object = N'COMMS_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -525,8 +498,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COMMS_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboCOMMS_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOMMS_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'COMP_ATTRIBUTES', @source_owner = N'dbo',
     @source_object = N'COMP_ATTRIBUTES', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -538,8 +511,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCOMP_ATTRIBUTES]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOMP_ATTRIBUTES]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COMPANY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'COMPANY',
     @source_owner = N'dbo', @source_object = N'COMPANY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -549,8 +522,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COMPANY',
     @del_cmd = N'CALL [sp_MSdel_dboCOMPANY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOMPANY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONFIG',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CONFIG',
     @source_owner = N'dbo', @source_object = N'CONFIG', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -560,8 +533,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONFIG',
     @del_cmd = N'CALL [sp_MSdel_dboCONFIG]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONFIG]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONSUMABLES',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CONSUMABLES',
     @source_owner = N'dbo', @source_object = N'CONSUMABLES',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -572,8 +545,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONSUMABLES',
     @del_cmd = N'CALL [sp_MSdel_dboCONSUMABLES]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONSUMABLES]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONTACT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CONTACT',
     @source_owner = N'dbo', @source_object = N'CONTACT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -583,8 +556,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONTACT',
     @del_cmd = N'CALL [sp_MSdel_dboCONTACT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONTACT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'CONTACT_DETAILS', @source_owner = N'dbo',
     @source_object = N'CONTACT_DETAILS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -596,8 +569,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCONTACT_DETAILS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONTACT_DETAILS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'CONTACT_DISTRIBUTION', @source_owner = N'dbo',
     @source_object = N'CONTACT_DISTRIBUTION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -609,8 +582,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboCONTACT_DISTRIBUTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONTACT_DISTRIBUTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONTACT_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CONTACT_TYPE',
     @source_owner = N'dbo', @source_object = N'CONTACT_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -621,8 +594,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CONTACT_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboCONTACT_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCONTACT_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COST_CENTRE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'COST_CENTRE',
     @source_owner = N'dbo', @source_object = N'COST_CENTRE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -633,8 +606,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COST_CENTRE',
     @del_cmd = N'CALL [sp_MSdel_dboCOST_CENTRE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOST_CENTRE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COST_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'COST_TYPE',
     @source_owner = N'dbo', @source_object = N'COST_TYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -645,8 +618,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COST_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboCOST_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOST_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COUNTRY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'COUNTRY',
     @source_owner = N'dbo', @source_object = N'COUNTRY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -656,8 +629,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'COUNTRY',
     @del_cmd = N'CALL [sp_MSdel_dboCOUNTRY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCOUNTRY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CREDIT_CARD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CREDIT_CARD',
     @source_owner = N'dbo', @source_object = N'CREDIT_CARD',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -668,8 +641,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CREDIT_CARD',
     @del_cmd = N'CALL [sp_MSdel_dboCREDIT_CARD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCREDIT_CARD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CURRENCY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CURRENCY',
     @source_owner = N'dbo', @source_object = N'CURRENCY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -680,8 +653,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CURRENCY',
     @del_cmd = N'CALL [sp_MSdel_dboCURRENCY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCURRENCY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CUST_FORMS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'CUST_FORMS',
     @source_owner = N'dbo', @source_object = N'CUST_FORMS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -692,8 +665,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'CUST_FORMS',
     @del_cmd = N'CALL [sp_MSdel_dboCUST_FORMS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboCUST_FORMS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'DATABASE_VERSION', @source_owner = N'dbo',
     @source_object = N'DATABASE_VERSION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -705,8 +678,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboDATABASE_VERSION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDATABASE_VERSION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DATE_RANGE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DATE_RANGE',
     @source_owner = N'dbo', @source_object = N'DATE_RANGE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -717,8 +690,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DATE_RANGE',
     @del_cmd = N'CALL [sp_MSdel_dboDATE_RANGE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDATE_RANGE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DAYBOOK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DAYBOOK',
     @source_owner = N'dbo', @source_object = N'DAYBOOK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -728,8 +701,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DAYBOOK',
     @del_cmd = N'CALL [sp_MSdel_dboDAYBOOK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDAYBOOK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DAYBOOK_ENTRY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DAYBOOK_ENTRY',
     @source_owner = N'dbo', @source_object = N'DAYBOOK_ENTRY',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -740,8 +713,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DAYBOOK_ENTRY',
     @del_cmd = N'CALL [sp_MSdel_dboDAYBOOK_ENTRY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDAYBOOK_ENTRY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEAL_METHOD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DEAL_METHOD',
     @source_owner = N'dbo', @source_object = N'DEAL_METHOD',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -752,8 +725,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEAL_METHOD',
     @del_cmd = N'CALL [sp_MSdel_dboDEAL_METHOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDEAL_METHOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEAL_SCOPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DEAL_SCOPE',
     @source_owner = N'dbo', @source_object = N'DEAL_SCOPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -764,8 +737,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEAL_SCOPE',
     @del_cmd = N'CALL [sp_MSdel_dboDEAL_SCOPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDEAL_SCOPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEALS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DEALS',
     @source_owner = N'dbo', @source_object = N'DEALS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -775,8 +748,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEALS',
     @del_cmd = N'CALL [sp_MSdel_dboDEALS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDEALS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'DELIVERY_METHOD', @source_owner = N'dbo',
     @source_object = N'DELIVERY_METHOD', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -788,8 +761,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboDELIVERY_METHOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDELIVERY_METHOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEPARTMENT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DEPARTMENT',
     @source_owner = N'dbo', @source_object = N'DEPARTMENT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -800,8 +773,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DEPARTMENT',
     @del_cmd = N'CALL [sp_MSdel_dboDEPARTMENT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDEPARTMENT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DETAIL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DETAIL',
     @source_owner = N'dbo', @source_object = N'DETAIL', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -811,8 +784,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DETAIL',
     @del_cmd = N'CALL [sp_MSdel_dboDETAIL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDETAIL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DETAIL_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DETAIL_TYPE',
     @source_owner = N'dbo', @source_object = N'DETAIL_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -823,8 +796,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DETAIL_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboDETAIL_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDETAIL_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DISTRIBUTION',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DISTRIBUTION',
     @source_owner = N'dbo', @source_object = N'DISTRIBUTION',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -835,8 +808,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DISTRIBUTION',
     @del_cmd = N'CALL [sp_MSdel_dboDISTRIBUTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDISTRIBUTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DOCUMENT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'DOCUMENT',
     @source_owner = N'dbo', @source_object = N'DOCUMENT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -846,8 +819,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'DOCUMENT',
     @del_cmd = N'CALL [sp_MSdel_dboDOCUMENT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDOCUMENT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'DOCUMENT_DISTRIBUTION', @source_owner = N'dbo',
     @source_object = N'DOCUMENT_DISTRIBUTION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -859,8 +832,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboDOCUMENT_DISTRIBUTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboDOCUMENT_DISTRIBUTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ED_LOG',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ED_LOG',
     @source_owner = N'dbo', @source_object = N'ED_LOG', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -870,8 +843,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ED_LOG',
     @del_cmd = N'CALL [sp_MSdel_dboED_LOG]',
     @upd_cmd = N'SCALL [sp_MSupd_dboED_LOG]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENQUIRY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENQUIRY',
     @source_owner = N'dbo', @source_object = N'ENQUIRY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -881,8 +854,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENQUIRY',
     @del_cmd = N'CALL [sp_MSdel_dboENQUIRY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENQUIRY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENQUIRY_REF',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENQUIRY_REF',
     @source_owner = N'dbo', @source_object = N'ENQUIRY_REF',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -893,8 +866,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENQUIRY_REF',
     @del_cmd = N'CALL [sp_MSdel_dboENQUIRY_REF]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENQUIRY_REF]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY',
     @source_owner = N'dbo', @source_object = N'ENTRY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -904,8 +877,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_CONTACT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY_CONTACT',
     @source_owner = N'dbo', @source_object = N'ENTRY_CONTACT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -916,8 +889,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_CONTACT',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY_CONTACT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY_CONTACT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_EXTRA',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY_EXTRA',
     @source_owner = N'dbo', @source_object = N'ENTRY_EXTRA',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -928,8 +901,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_EXTRA',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY_EXTRA]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY_EXTRA]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_LABEL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY_LABEL',
     @source_owner = N'dbo', @source_object = N'ENTRY_LABEL',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -940,8 +913,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_LABEL',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY_LABEL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY_LABEL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_PRINT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY_PRINT',
     @source_owner = N'dbo', @source_object = N'ENTRY_PRINT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -952,8 +925,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_PRINT',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY_PRINT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY_PRINT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ENTRY_TYPE',
     @source_owner = N'dbo', @source_object = N'ENTRY_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -964,8 +937,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ENTRY_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboENTRY_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboENTRY_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'EXTRA',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'EXTRA',
     @source_owner = N'dbo', @source_object = N'EXTRA', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -975,8 +948,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'EXTRA',
     @del_cmd = N'CALL [sp_MSdel_dboEXTRA]',
     @upd_cmd = N'SCALL [sp_MSupd_dboEXTRA]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FEATURES',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'FEATURES',
     @source_owner = N'dbo', @source_object = N'FEATURES', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -987,8 +960,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FEATURES',
     @del_cmd = N'CALL [sp_MSdel_dboFEATURES]',
     @upd_cmd = N'SCALL [sp_MSupd_dboFEATURES]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FIELD_TEXT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'FIELD_TEXT',
     @source_owner = N'dbo', @source_object = N'FIELD_TEXT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -999,8 +972,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FIELD_TEXT',
     @del_cmd = N'CALL [sp_MSdel_dboFIELD_TEXT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboFIELD_TEXT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FIFO',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'FIFO',
     @source_owner = N'dbo', @source_object = N'FIFO', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1010,8 +983,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FIFO',
     @del_cmd = N'CALL [sp_MSdel_dboFIFO]',
     @upd_cmd = N'SCALL [sp_MSupd_dboFIFO]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FileDetails',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'FileDetails',
     @source_owner = N'dbo', @source_object = N'FileDetails',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1022,8 +995,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FileDetails',
     @del_cmd = N'CALL [sp_MSdel_dboFileDetails]',
     @upd_cmd = N'SCALL [sp_MSupd_dboFileDetails]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FILTER_LIST',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'FILTER_LIST',
     @source_owner = N'dbo', @source_object = N'FILTER_LIST',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1034,8 +1007,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'FILTER_LIST',
     @del_cmd = N'CALL [sp_MSdel_dboFILTER_LIST]',
     @upd_cmd = N'SCALL [sp_MSupd_dboFILTER_LIST]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GRID_SETTINGS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'GRID_SETTINGS',
     @source_owner = N'dbo', @source_object = N'GRID_SETTINGS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1046,8 +1019,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GRID_SETTINGS',
     @del_cmd = N'CALL [sp_MSdel_dboGRID_SETTINGS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboGRID_SETTINGS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GROUP_DEFS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'GROUP_DEFS',
     @source_owner = N'dbo', @source_object = N'GROUP_DEFS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1058,8 +1031,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GROUP_DEFS',
     @del_cmd = N'CALL [sp_MSdel_dboGROUP_DEFS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboGROUP_DEFS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GROUP_LINKS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'GROUP_LINKS',
     @source_owner = N'dbo', @source_object = N'GROUP_LINKS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1070,8 +1043,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'GROUP_LINKS',
     @del_cmd = N'CALL [sp_MSdel_dboGROUP_LINKS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboGROUP_LINKS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'HORIZONWEB_LOGIN_ATTEMPTS', @source_owner = N'dbo',
     @source_object = N'HORIZONWEB_LOGIN_ATTEMPTS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1083,8 +1056,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboHORIZONWEB_LOGIN_ATTEMPTS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboHORIZONWEB_LOGIN_ATTEMPTS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'HORIZONWEB_PWD_LINKS', @source_owner = N'dbo',
     @source_object = N'HORIZONWEB_PWD_LINKS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1096,8 +1069,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboHORIZONWEB_PWD_LINKS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboHORIZONWEB_PWD_LINKS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'INVOICE_METHOD', @source_owner = N'dbo',
     @source_object = N'INVOICE_METHOD', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1109,8 +1082,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboINVOICE_METHOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboINVOICE_METHOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'INVOICE_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'INVOICE_TYPE',
     @source_owner = N'dbo', @source_object = N'INVOICE_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1121,8 +1094,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'INVOICE_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboINVOICE_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboINVOICE_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ITEM',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ITEM',
     @source_owner = N'dbo', @source_object = N'ITEM', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1132,8 +1105,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ITEM',
     @del_cmd = N'CALL [sp_MSdel_dboITEM]',
     @upd_cmd = N'SCALL [sp_MSupd_dboITEM]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ITEM_HISTORY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'ITEM_HISTORY',
     @source_owner = N'dbo', @source_object = N'ITEM_HISTORY',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1144,8 +1117,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'ITEM_HISTORY',
     @del_cmd = N'CALL [sp_MSdel_dboITEM_HISTORY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboITEM_HISTORY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LABEL_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'LABEL_TYPE',
     @source_owner = N'dbo', @source_object = N'LABEL_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1156,8 +1129,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LABEL_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboLABEL_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboLABEL_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LEDGER_STATUS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'LEDGER_STATUS',
     @source_owner = N'dbo', @source_object = N'LEDGER_STATUS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1168,8 +1141,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LEDGER_STATUS',
     @del_cmd = N'CALL [sp_MSdel_dboLEDGER_STATUS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboLEDGER_STATUS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LOGIN',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'LOGIN',
     @source_owner = N'dbo', @source_object = N'LOGIN', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1179,8 +1152,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LOGIN',
     @del_cmd = N'CALL [sp_MSdel_dboLOGIN]',
     @upd_cmd = N'SCALL [sp_MSupd_dboLOGIN]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LOOKUP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'LOOKUP',
     @source_owner = N'dbo', @source_object = N'LOOKUP', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1190,8 +1163,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'LOOKUP',
     @del_cmd = N'CALL [sp_MSdel_dboLOOKUP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboLOOKUP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'MACHINE',
     @source_owner = N'dbo', @source_object = N'MACHINE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1201,8 +1174,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE',
     @del_cmd = N'CALL [sp_MSdel_dboMACHINE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMACHINE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE_PARTS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'MACHINE_PARTS',
     @source_owner = N'dbo', @source_object = N'MACHINE_PARTS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1213,8 +1186,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE_PARTS',
     @del_cmd = N'CALL [sp_MSdel_dboMACHINE_PARTS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMACHINE_PARTS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'MACHINE_TYPE',
     @source_owner = N'dbo', @source_object = N'MACHINE_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1225,8 +1198,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MACHINE_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboMACHINE_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMACHINE_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MEDIA_LINKS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'MEDIA_LINKS',
     @source_owner = N'dbo', @source_object = N'MEDIA_LINKS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1237,8 +1210,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MEDIA_LINKS',
     @del_cmd = N'CALL [sp_MSdel_dboMEDIA_LINKS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMEDIA_LINKS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'METER',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'METER',
     @source_owner = N'dbo', @source_object = N'METER', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1248,8 +1221,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'METER',
     @del_cmd = N'CALL [sp_MSdel_dboMETER]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMETER]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'METERCLICK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'METERCLICK',
     @source_owner = N'dbo', @source_object = N'METERCLICK',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1260,8 +1233,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'METERCLICK',
     @del_cmd = N'CALL [sp_MSdel_dboMETERCLICK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMETERCLICK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MONTH_NUMBERS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'MONTH_NUMBERS',
     @source_owner = N'dbo', @source_object = N'MONTH_NUMBERS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1272,8 +1245,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'MONTH_NUMBERS',
     @del_cmd = N'CALL [sp_MSdel_dboMONTH_NUMBERS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboMONTH_NUMBERS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'NEEDSHOP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'NEEDSHOP',
     @source_owner = N'dbo', @source_object = N'NEEDSHOP', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1283,8 +1256,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'NEEDSHOP',
     @del_cmd = N'CALL [sp_MSdel_dboNEEDSHOP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboNEEDSHOP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'NOMINAL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'NOMINAL',
     @source_owner = N'dbo', @source_object = N'NOMINAL', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1294,8 +1267,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'NOMINAL',
     @del_cmd = N'CALL [sp_MSdel_dboNOMINAL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboNOMINAL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'NOMINAL_HISTORY', @source_owner = N'dbo',
     @source_object = N'NOMINAL_HISTORY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1307,8 +1280,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboNOMINAL_HISTORY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboNOMINAL_HISTORY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'OP_EXTRA',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'OP_EXTRA',
     @source_owner = N'dbo', @source_object = N'OP_EXTRA', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1319,8 +1292,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'OP_EXTRA',
     @del_cmd = N'CALL [sp_MSdel_dboOP_EXTRA]',
     @upd_cmd = N'SCALL [sp_MSupd_dboOP_EXTRA]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PARTS_LIST',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PARTS_LIST',
     @source_owner = N'dbo', @source_object = N'PARTS_LIST',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1331,8 +1304,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PARTS_LIST',
     @del_cmd = N'CALL [sp_MSdel_dboPARTS_LIST]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPARTS_LIST]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PAY_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PAY_TYPE',
     @source_owner = N'dbo', @source_object = N'PAY_TYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1342,8 +1315,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PAY_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboPAY_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPAY_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PERIOD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PERIOD',
     @source_owner = N'dbo', @source_object = N'PERIOD', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1353,8 +1326,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PERIOD',
     @del_cmd = N'CALL [sp_MSdel_dboPERIOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPERIOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'POSTING',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'POSTING',
     @source_owner = N'dbo', @source_object = N'POSTING', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1364,8 +1337,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'POSTING',
     @del_cmd = N'CALL [sp_MSdel_dboPOSTING]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPOSTING]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRINTERS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PRINTERS',
     @source_owner = N'dbo', @source_object = N'PRINTERS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1376,8 +1349,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRINTERS',
     @del_cmd = N'CALL [sp_MSdel_dboPRINTERS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRINTERS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PROCESS_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PROCESS_TYPE',
     @source_owner = N'dbo', @source_object = N'PROCESS_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1388,8 +1361,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PROCESS_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboPROCESS_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPROCESS_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PRODUCT',
     @source_owner = N'dbo', @source_object = N'PRODUCT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1399,8 +1372,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'PRODUCT_COMPATIBLE', @source_owner = N'dbo',
     @source_object = N'PRODUCT_COMPATIBLE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1412,8 +1385,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_COMPATIBLE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_COMPATIBLE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT_GROUP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PRODUCT_GROUP',
     @source_owner = N'dbo', @source_object = N'PRODUCT_GROUP',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1424,8 +1397,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT_GROUP',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_GROUP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_GROUP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT_RANGE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'PRODUCT_RANGE',
     @source_owner = N'dbo', @source_object = N'PRODUCT_RANGE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1436,8 +1409,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'PRODUCT_RANGE',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_RANGE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_RANGE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'PRODUCT_SECTOR', @source_owner = N'dbo',
     @source_object = N'PRODUCT_SECTOR', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1449,8 +1422,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_SECTOR]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_SECTOR]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'PRODUCT_SUBGROUP', @source_owner = N'dbo',
     @source_object = N'PRODUCT_SUBGROUP', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1462,8 +1435,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_SUBGROUP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_SUBGROUP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'PRODUCT_SUPPLY', @source_owner = N'dbo',
     @source_object = N'PRODUCT_SUPPLY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1475,8 +1448,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboPRODUCT_SUPPLY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboPRODUCT_SUPPLY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'QTY_BREAK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'QTY_BREAK',
     @source_owner = N'dbo', @source_object = N'QTY_BREAK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1487,8 +1460,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'QTY_BREAK',
     @del_cmd = N'CALL [sp_MSdel_dboQTY_BREAK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboQTY_BREAK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_FIELD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RB_FIELD',
     @source_owner = N'dbo', @source_object = N'RB_FIELD', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1498,8 +1471,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_FIELD',
     @del_cmd = N'CALL [sp_MSdel_dboRB_FIELD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRB_FIELD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_FOLDER',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RB_FOLDER',
     @source_owner = N'dbo', @source_object = N'RB_FOLDER', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1510,8 +1483,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_FOLDER',
     @del_cmd = N'CALL [sp_MSdel_dboRB_FOLDER]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRB_FOLDER]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_ITEM',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RB_ITEM',
     @source_owner = N'dbo', @source_object = N'RB_ITEM', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1521,8 +1494,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_ITEM',
     @del_cmd = N'CALL [sp_MSdel_dboRB_ITEM]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRB_ITEM]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_JOIN',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RB_JOIN',
     @source_owner = N'dbo', @source_object = N'RB_JOIN', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1532,8 +1505,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_JOIN',
     @del_cmd = N'CALL [sp_MSdel_dboRB_JOIN]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRB_JOIN]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_TABLE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RB_TABLE',
     @source_owner = N'dbo', @source_object = N'RB_TABLE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1544,8 +1517,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RB_TABLE',
     @del_cmd = N'CALL [sp_MSdel_dboRB_TABLE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRB_TABLE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'REP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'REP',
     @source_owner = N'dbo', @source_object = N'REP', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1554,8 +1527,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'REP',
     @ins_cmd = N'CALL [sp_MSins_dboREP]', @del_cmd = N'CALL [sp_MSdel_dboREP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboREP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'REPORT_PARAMS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'REPORT_PARAMS',
     @source_owner = N'dbo', @source_object = N'REPORT_PARAMS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1566,8 +1539,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'REPORT_PARAMS',
     @del_cmd = N'CALL [sp_MSdel_dboREPORT_PARAMS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboREPORT_PARAMS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RESULTS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RESULTS',
     @source_owner = N'dbo', @source_object = N'RESULTS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1577,8 +1550,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RESULTS',
     @del_cmd = N'CALL [sp_MSdel_dboRESULTS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRESULTS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RETRO_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RETRO_TYPE',
     @source_owner = N'dbo', @source_object = N'RETRO_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1589,8 +1562,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RETRO_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboRETRO_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRETRO_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RETURN_REASON',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'RETURN_REASON',
     @source_owner = N'dbo', @source_object = N'RETURN_REASON',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1601,8 +1574,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'RETURN_REASON',
     @del_cmd = N'CALL [sp_MSdel_dboRETURN_REASON]',
     @upd_cmd = N'SCALL [sp_MSupd_dboRETURN_REASON]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SAVED_QUERY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SAVED_QUERY',
     @source_owner = N'dbo', @source_object = N'SAVED_QUERY',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1613,8 +1586,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SAVED_QUERY',
     @del_cmd = N'CALL [sp_MSdel_dboSAVED_QUERY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSAVED_QUERY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SERIAL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SERIAL',
     @source_owner = N'dbo', @source_object = N'SERIAL', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1624,8 +1597,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SERIAL',
     @del_cmd = N'CALL [sp_MSdel_dboSERIAL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSERIAL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'SERIAL_HISTORY', @source_owner = N'dbo',
     @source_object = N'SERIAL_HISTORY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1637,8 +1610,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboSERIAL_HISTORY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSERIAL_HISTORY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SERVICE_CODE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SERVICE_CODE',
     @source_owner = N'dbo', @source_object = N'SERVICE_CODE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1649,8 +1622,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SERVICE_CODE',
     @del_cmd = N'CALL [sp_MSdel_dboSERVICE_CODE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSERVICE_CODE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'SERVICE_MATRIX', @source_owner = N'dbo',
     @source_object = N'SERVICE_MATRIX', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1662,8 +1635,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboSERVICE_MATRIX]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSERVICE_MATRIX]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SHOPLINK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SHOPLINK',
     @source_owner = N'dbo', @source_object = N'SHOPLINK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1673,8 +1646,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SHOPLINK',
     @del_cmd = N'CALL [sp_MSdel_dboSHOPLINK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSHOPLINK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SHOPPING',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SHOPPING',
     @source_owner = N'dbo', @source_object = N'SHOPPING', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1685,8 +1658,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SHOPPING',
     @del_cmd = N'CALL [sp_MSdel_dboSHOPPING]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSHOPPING]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SOR_COSTING',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SOR_COSTING',
     @source_owner = N'dbo', @source_object = N'SOR_COSTING',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1697,8 +1670,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SOR_COSTING',
     @del_cmd = N'CALL [sp_MSdel_dboSOR_COSTING]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSOR_COSTING]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SOURCE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SOURCE',
     @source_owner = N'dbo', @source_object = N'SOURCE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1708,8 +1681,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SOURCE',
     @del_cmd = N'CALL [sp_MSdel_dboSOURCE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSOURCE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SPOOLER',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SPOOLER',
     @source_owner = N'dbo', @source_object = N'SPOOLER', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1719,8 +1692,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SPOOLER',
     @del_cmd = N'CALL [sp_MSdel_dboSPOOLER]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSPOOLER]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'STOCK',
     @source_owner = N'dbo', @source_object = N'STOCK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1730,8 +1703,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCK',
     @del_cmd = N'CALL [sp_MSdel_dboSTOCK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSTOCK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCK_AUDIT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'STOCK_AUDIT',
     @source_owner = N'dbo', @source_object = N'STOCK_AUDIT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1742,8 +1715,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCK_AUDIT',
     @del_cmd = N'CALL [sp_MSdel_dboSTOCK_AUDIT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSTOCK_AUDIT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCKTAKE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'STOCKTAKE',
     @source_owner = N'dbo', @source_object = N'STOCKTAKE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1754,8 +1727,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'STOCKTAKE',
     @del_cmd = N'CALL [sp_MSdel_dboSTOCKTAKE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSTOCKTAKE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SUMMARY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SUMMARY',
     @source_owner = N'dbo', @source_object = N'SUMMARY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1765,8 +1738,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SUMMARY',
     @del_cmd = N'CALL [sp_MSdel_dboSUMMARY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSUMMARY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SWAP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SWAP',
     @source_owner = N'dbo', @source_object = N'SWAP', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1776,8 +1749,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SWAP',
     @del_cmd = N'CALL [sp_MSdel_dboSWAP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSWAP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SWAP_CLASS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'SWAP_CLASS',
     @source_owner = N'dbo', @source_object = N'SWAP_CLASS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1788,8 +1761,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'SWAP_CLASS',
     @del_cmd = N'CALL [sp_MSdel_dboSWAP_CLASS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSWAP_CLASS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'SWITCH_EXCEPTION', @source_owner = N'dbo',
     @source_object = N'SWITCH_EXCEPTION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1801,8 +1774,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboSWITCH_EXCEPTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSWITCH_EXCEPTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'SYSTEM_FUNCTION', @source_owner = N'dbo',
     @source_object = N'SYSTEM_FUNCTION', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1814,8 +1787,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboSYSTEM_FUNCTION]',
     @upd_cmd = N'SCALL [sp_MSupd_dboSYSTEM_FUNCTION]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TERMS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TERMS',
     @source_owner = N'dbo', @source_object = N'TERMS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1825,8 +1798,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TERMS',
     @del_cmd = N'CALL [sp_MSdel_dboTERMS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTERMS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TEXT_SEARCH',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TEXT_SEARCH',
     @source_owner = N'dbo', @source_object = N'TEXT_SEARCH',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1837,8 +1810,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TEXT_SEARCH',
     @del_cmd = N'CALL [sp_MSdel_dboTEXT_SEARCH]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTEXT_SEARCH]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TILL',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TILL',
     @source_owner = N'dbo', @source_object = N'TILL', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1848,8 +1821,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TILL',
     @del_cmd = N'CALL [sp_MSdel_dboTILL]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTILL]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TRADER',
     @source_owner = N'dbo', @source_object = N'TRADER', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1859,8 +1832,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_CLASS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TRADER_CLASS',
     @source_owner = N'dbo', @source_object = N'TRADER_CLASS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1871,8 +1844,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_CLASS',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER_CLASS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER_CLASS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'TRADER_COMMS_PATH', @source_owner = N'dbo',
     @source_object = N'TRADER_COMMS_PATH', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -1884,8 +1857,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER_COMMS_PATH]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER_COMMS_PATH]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_NOTES',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TRADER_NOTES',
     @source_owner = N'dbo', @source_object = N'TRADER_NOTES',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1896,8 +1869,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_NOTES',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER_NOTES]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER_NOTES]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_SWAP',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TRADER_SWAP',
     @source_owner = N'dbo', @source_object = N'TRADER_SWAP',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1908,8 +1881,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_SWAP',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER_SWAP]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER_SWAP]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_TYPE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TRADER_TYPE',
     @source_owner = N'dbo', @source_object = N'TRADER_TYPE',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1920,8 +1893,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TRADER_TYPE',
     @del_cmd = N'CALL [sp_MSdel_dboTRADER_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTRADER_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$LINK',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TS$LINK',
     @source_owner = N'dbo', @source_object = N'TS$LINK', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1931,8 +1904,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$LINK',
     @del_cmd = N'CALL [sp_MSdel_dboTS$LINK]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTS$LINK]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$OBJ',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TS$OBJ',
     @source_owner = N'dbo', @source_object = N'TS$OBJ', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1942,8 +1915,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$OBJ',
     @del_cmd = N'CALL [sp_MSdel_dboTS$OBJ]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTS$OBJ]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$OPT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TS$OPT',
     @source_owner = N'dbo', @source_object = N'TS$OPT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1953,8 +1926,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$OPT',
     @del_cmd = N'CALL [sp_MSdel_dboTS$OPT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTS$OPT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$QUERY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TS$QUERY',
     @source_owner = N'dbo', @source_object = N'TS$QUERY', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1964,8 +1937,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$QUERY',
     @del_cmd = N'CALL [sp_MSdel_dboTS$QUERY]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTS$QUERY]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$VOCAB',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'TS$VOCAB',
     @source_owner = N'dbo', @source_object = N'TS$VOCAB', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -1975,8 +1948,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'TS$VOCAB',
     @del_cmd = N'CALL [sp_MSdel_dboTS$VOCAB]',
     @upd_cmd = N'SCALL [sp_MSupd_dboTS$VOCAB]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'USER_ACCESS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'USER_ACCESS',
     @source_owner = N'dbo', @source_object = N'USER_ACCESS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1987,8 +1960,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'USER_ACCESS',
     @del_cmd = N'CALL [sp_MSdel_dboUSER_ACCESS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboUSER_ACCESS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'USER_REPORTS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'USER_REPORTS',
     @source_owner = N'dbo', @source_object = N'USER_REPORTS',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -1999,8 +1972,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'USER_REPORTS',
     @del_cmd = N'CALL [sp_MSdel_dboUSER_REPORTS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboUSER_REPORTS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAN',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'VAN',
     @source_owner = N'dbo', @source_object = N'VAN', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -2009,8 +1982,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAN',
     @ins_cmd = N'CALL [sp_MSins_dboVAN]', @del_cmd = N'CALL [sp_MSdel_dboVAN]',
     @upd_cmd = N'SCALL [sp_MSupd_dboVAN]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAN_AREA',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'VAN_AREA',
     @source_owner = N'dbo', @source_object = N'VAN_AREA', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -2021,8 +1994,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAN_AREA',
     @del_cmd = N'CALL [sp_MSdel_dboVAN_AREA]',
     @upd_cmd = N'SCALL [sp_MSupd_dboVAN_AREA]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAT_PERIOD',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'VAT_PERIOD',
     @source_owner = N'dbo', @source_object = N'VAT_PERIOD',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -2033,8 +2006,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAT_PERIOD',
     @del_cmd = N'CALL [sp_MSdel_dboVAT_PERIOD]',
     @upd_cmd = N'SCALL [sp_MSupd_dboVAT_PERIOD]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAT_RATE',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'VAT_RATE',
     @source_owner = N'dbo', @source_object = N'VAT_RATE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -2044,8 +2017,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'VAT_RATE',
     @del_cmd = N'CALL [sp_MSdel_dboVAT_RATE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboVAT_RATE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'VISION_CONVERT', @source_owner = N'dbo',
     @source_object = N'VISION_CONVERT', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -2057,8 +2030,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboVISION_CONVERT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboVISION_CONVERT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WEB_CONTACT',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'WEB_CONTACT',
     @source_owner = N'dbo', @source_object = N'WEB_CONTACT',
     @type = N'logbased', @description = N'', @creation_script = N'',
     @pre_creation_cmd = N'drop', @schema_option = 0x00000000080350DF,
@@ -2069,8 +2042,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WEB_CONTACT',
     @del_cmd = N'CALL [sp_MSdel_dboWEB_CONTACT]',
     @upd_cmd = N'SCALL [sp_MSupd_dboWEB_CONTACT]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl',
     @article = N'WEB_PAYMENT_TYPE', @source_owner = N'dbo',
     @source_object = N'WEB_PAYMENT_TYPE', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
@@ -2082,8 +2055,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl',
     @del_cmd = N'CALL [sp_MSdel_dboWEB_PAYMENT_TYPE]',
     @upd_cmd = N'SCALL [sp_MSupd_dboWEB_PAYMENT_TYPE]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WEB_STATS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'WEB_STATS',
     @source_owner = N'dbo', @source_object = N'WEB_STATS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -2094,8 +2067,8 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WEB_STATS',
     @del_cmd = N'CALL [sp_MSdel_dboWEB_STATS]',
     @upd_cmd = N'SCALL [sp_MSupd_dboWEB_STATS]';
 GO
-USE [HZN_QUALITY];
-EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WORDS',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addarticle @publication = N'<Add_DB_Name_Here>_Repl', @article = N'WORDS',
     @source_owner = N'dbo', @source_object = N'WORDS', @type = N'logbased',
     @description = N'', @creation_script = N'', @pre_creation_cmd = N'drop',
     @schema_option = 0x00000000080350DF,
@@ -2107,13 +2080,13 @@ EXEC sp_addarticle @publication = N'QUALITY_Repl', @article = N'WORDS',
 GO
 
 -- Adding the transactional subscriptions
-USE [HZN_QUALITY];
-EXEC sp_addsubscription @publication = N'QUALITY_Repl',
-    @subscriber = N'SBS01\SQLSERVER', @destination_db = N'HZN_QUALITY',
+USE [<Add_DB_Name_Here>];
+EXEC sp_addsubscription @publication = N'<Add_DB_Name_Here>_Repl',
+    @subscriber = N'<Add_Subscriber_DB_Name_Here>', @destination_db = N'<Add_DB_Name_Here>',
     @subscription_type = N'Push', @sync_type = N'automatic', @article = N'all',
     @update_mode = N'read only', @subscriber_type = 0;
-EXEC sp_addpushsubscription_agent @publication = N'QUALITY_Repl',
-    @subscriber = N'SBS01\SQLSERVER', @subscriber_db = N'HZN_QUALITY',
+EXEC sp_addpushsubscription_agent @publication = N'<Add_DB_Name_Here>_Repl',
+    @subscriber = N'<Add_Subscriber_DB_Name_Here>', @subscriber_db = N'<Add_DB_Name_Here>',
     @job_login = NULL, @job_password = NULL, @subscriber_security_mode = 0,
     @subscriber_login = N'database_rep', @subscriber_password = NULL,
     @frequency_type = 64, @frequency_interval = 1,
