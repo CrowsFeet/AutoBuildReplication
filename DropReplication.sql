@@ -3,7 +3,7 @@ SET NOCOUNT ON
 
 -- Testing
 DECLARE @DBName NVARCHAR(255)
-SET @DBName = 'HZN_CITRUS'
+SET @DBName = '<Add_DB_Name_Here>'
 
 DECLARE @PublicationName NVARCHAR(255),
 		@PublisherDB NVARCHAR(255),
@@ -21,11 +21,11 @@ WHERE PublisherDB = @DBName
 DECLARE @publication sysname,
 		@subscriber sysname
 
-SET @publication = @PublicationName --'CITRUS_Replication'
-SET @subscriber = @SubscriberServerName --'UKCB-ANDYG'
+SET @publication = @PublicationName --'<Add_DB_Name_Here>_Replication'
+SET @subscriber = @SubscriberServerName --'<Add_Subscriber_DB_Name_Here>'
 
 SET @SQL1 = '
-USE '  + @DBName + ' -- HZN_CITRUS
+USE '  + @DBName + ' -- <Add_DB_Name_Here>
 EXEC sp_dropsubscription 
   @publication = ''' + @publication + ''', 
   @article = N''all'',
@@ -36,8 +36,8 @@ EXEC sp_executeSQL @SQL1
 --DECLARE @publicationDB AS sysname;
 --DECLARE @publication AS sysname;
 
---SET @publicationDB = N'HZN_CITRUS'; 
---SET @publication = N'CITRUS_Replication'; 
+--SET @publicationDB = N'<Add_DB_Name_Here>'; 
+--SET @publication = N'<Add_DB_Name_Here>_Replication'; 
 
 SET @SQL1 = ''
 
@@ -49,7 +49,7 @@ SET @publicationDB = ''' + @PublisherDB + '''
 SET @publication = ''' + @PublicationName + ''' 
 
 -- Remove a transactional publication.
-USE ' + @DBName  + ' --HZN_CITRUS
+USE ' + @DBName  + ' --<Add_DB_Name_Here>
 EXEC sp_droppublication @publication = @publication;
 '
 
